@@ -31,11 +31,11 @@ def run_browser_test():
 
     # Browsing test
     urls = [
-        'https://www.theverge.com/2024/7/2/24190823/figma-ai-tool-apple-weather-app-copy',
-        'https://www.theverge.com/2024/7/2/24190641/apple-vision-pro-headset-future-cheaper',
-        'https://www.theverge.com/2024/6/25/24185462/microsoft-surface-laptop-7th-edition-review',
-        'https://www.theverge.com/23350899/nintendo-switch-controllers-best-wireless-joy-con-gamepad',
-        'https://www.theverge.com/24185290/beats-pill-2024-bluetooth-speaker-review',
+        'https://www.engadget.com/the-7-best-white-elephant-gifts-that-are-worth-stealing-150516076.html',
+        'https://www.engadget.com/transportation/evs/tesla-is-recalling-almost-700000-vehicles-over-a-tire-pressure-monitor-issue-223639361.html',
+        'https://www.engadget.com/entertainment/tv-movies/james-bond-the-movie-franchise-not-the-spy-may-be-in-deep-jeopardy-211608094.html',
+        'https://www.engadget.com/cybersecurity/the-us-consumer-financial-protection-bureau-sues-zelle-and-four-of-its-partner-banks-175714692.html',
+        'https://www.engadget.com/apps/flipboard-just-launched-surf-which-is-sort-of-like-an-rss-feed-for-the-open-social-web-184015833.html',
     ]
 
     for url in urls:
