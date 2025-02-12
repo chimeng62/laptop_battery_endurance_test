@@ -75,7 +75,6 @@ python3 -m test
 ### Windows:
 
 Note: You must run the following commands in Command Prompt (CMD), do not run on PowerShell
-(You may need to install C++ Builds Tools if the error show when building wheels. Check the error message to see if you need to do so)
 
 ```sh
 python -m venv battery_test_env
@@ -91,6 +90,10 @@ python -m test
 battery_test_env\Scripts\activate.bat
 python -m test
 ```
+
+Note for Windows ARM:
+
+You may need to install C++ Builds Tools (especially on Windows ARM devices) if the error show when building wheels. Check the error message to see if you need to do so. Download [https://visualstudio.microsoft.com/visual-cpp-build-tools/](C++ Build Tools here) and install *Desktop Development with C++*, then run the installation commands again.
 
 # Disable YouTube test
 
