@@ -92,9 +92,7 @@ python -m test
 ```
 
 > [!NOTE]
-**Note for Windows ARM**:
-
-> You may need to install C++ Builds Tools (especially on Windows ARM devices) if the error show when building wheels. Check the error message to see if you need to do so. Download [C++ Build Tools here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) and install **Desktop Development with C++**, then run the installation commands again.
+**Note for Windows ARM**: You may need to install C++ Builds Tools (especially on Windows ARM devices) if the error show when building wheels. Check the error message to see if you need to do so. Download [C++ Build Tools here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) and install **Desktop Development with C++**, then run the installation commands again.
 
 # Disable YouTube test
 
