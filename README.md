@@ -76,7 +76,7 @@ python3 -m test
 
 Note: You must run the following commands in Command Prompt (CMD), do not run on PowerShell
 
-```sh
+```cmd
 python -m venv battery_test_env
 battery_test_env\Scripts\activate.bat
 python.exe -m pip install --upgrade pip
@@ -86,7 +86,7 @@ python -m test
 
 **You only need to do it once, on the first time**. For the following runs, you only need to run these code
 
-```sh
+```cmd
 battery_test_env\Scripts\activate.bat
 python -m test
 ```
