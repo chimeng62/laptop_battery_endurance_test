@@ -5,6 +5,7 @@ import os
 import platform
 import logging
 import argparse
+from datetime import datetime
 
 from utils.battery_utils import get_battery_level
 from test_cases.office_test import run_office_test
@@ -44,9 +45,15 @@ def start_test(no_youtube='0'):
         if str(no_youtube) != '1':
             run_youtube_test()
 
+def calculate_elapsed_time(start_time):
+    elapsed_time = datetime.now() - start_time
+    print(f'Elapsed time: {elapsed_time}')
+
 def information_process():
+    start_time = datetime.now()
     while True:
         get_battery_level()
+        calculate_elapsed_time(start_time=start_time)
         time.sleep(3)
 
 if __name__ == "__main__":
