@@ -32,11 +32,13 @@ In the future, text input will be added to better resemble how a normal user wou
 # Before you run any test, check all boxes in this checklist
 
 Use this checklist and you can make sure all tests are consistent
-- [ ] Set laptop's screen brightness to 75% (on Mac, you can ask Siri "Set screen brightness to 75% for an accurate setting)
+- [ ] Set laptop Power mode to "Balance" (on Mac, do not turn on High Performance Mode)
+- [ ] Set laptop's screen brightness to 75% (on Mac, you can ask Siri "Set screen brightness to 75% for an accurate setting). Leave all refresh rate at default config.
 - [ ] Turn off auto turn off screen on battery power
 - [ ] Connect your laptop to Wifi network, turn on Bluetooth
 - [ ] Leave battery saver mode on if your laptop have it, set battery saver on at 30% (30% is the default settings for Windows in recent updates)
-- [ ] Turn lower screen brightness on low battery off
+- [ ] Turn "lower screen brightness on low battery" off
+- [ ] Turn of any battery settings such as auto dim / lock screen when user is away... (on some new Windows laptops)
 - [ ] Turn the volume to 0%
 - [ ] Charge your laptop to 100% battery
 
