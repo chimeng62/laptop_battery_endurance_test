@@ -9,6 +9,8 @@ from datetime import datetime
 
 from utils.battery_utils import get_battery_level
 from utils.process_manager import process_manager
+from utils.logger_config import get_logger
+from utils.results_manager import ResultsManager
 from test_cases.office_test import run_office_test
 from test_cases.browser_test import run_browser_test
 from test_cases.youtube_test import run_youtube_test
@@ -16,11 +18,15 @@ from test_cases.youtube_test import run_youtube_test
 # Disable fail safe mechanism of Pyautogui
 pyautogui.FAILSAFE = False
 
-# Configure centralized logging
+# Configure centralized logging and results management
 from utils.logger_config import get_logger
+from utils.results_manager import results_manager
 logger = get_logger(__name__)
 
 def start_test(no_youtube='0'):
+    # Start organized test session
+    test_id = results_manager.start_new_test("battery_endurance")
+    logger.info(f'Starting new organized test session: {test_id}')
     logger.info('====================== Starting new test... ====================')
     if (no_youtube == '1'):
         youtube_message = 'YouTube test is disabled'
@@ -39,6 +45,10 @@ def start_test(no_youtube='0'):
     try:
         while True:
             print("Starting new test cycle...")
+            
+            # Record battery level at start of cycle
+            battery_level = get_battery_level()
+            results_manager.record_battery_reading(test_id, battery_level)
             
             # Cleanup any processes from previous cycles
             cleanup_count = process_manager.cleanup_common_test_processes(force_kill=True)
@@ -78,6 +88,11 @@ def start_test(no_youtube='0'):
         print("Performing final cleanup...")
         final_cleanup = process_manager.cleanup_common_test_processes(force_kill=True)
         logger.info(f'Final cleanup: terminated {final_cleanup} processes')
+        
+        # Finish the organized test session
+        final_battery = get_battery_level()
+        results_manager.finish_test(final_battery_percent=final_battery.get('percentage', None))
+        logger.info(f'Test completed - Results saved to: {results_manager.current_test_dir}')
 
 def calculate_elapsed_time(start_time):
     elapsed_time = datetime.now() - start_time

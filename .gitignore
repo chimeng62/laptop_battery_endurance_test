@@ -163,4 +163,7 @@ cython_debug/
 
 battery_test_env
 
+# Battery test results directory
+battery_test_results/
+
 ~$rd_test_2.docx
