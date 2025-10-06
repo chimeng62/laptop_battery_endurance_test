@@ -4,38 +4,53 @@
 
 This is a Python-based battery endurance testing tool that simulates realistic office workloads to measure laptop battery life. The tool runs continuous cycles of web browsing, Microsoft Office tasks, and YouTube video playback to provide standardized battery performance measurements.
 
-## Project Structure
+## Project Structure (Organized - Post Cleanup)
 
 ```
 laptop_battery_endurance_test/
 ├── __init__.py                      # Package initialization  
 ├── README.md                       # User documentation
+├── claude.md                       # Development analysis & progress tracking
+├── SPRINT1_COMPLETE.md             # Sprint 1 completion documentation
 ├── requirements.txt                # Python dependencies (pyautogui, psutil)
 ├── test.py                         # Main entry point and test orchestrator
 ├── datetime_calculator.py          # Utility for calculating test duration
-├── utils/
+├── utils/                          # Core utility modules
 │   ├── __init__.py
 │   ├── battery_utils.py            # Battery monitoring utilities (enhanced)
-│   ├── process_manager.py          # NEW: Cross-platform process management
-│   ├── logger_config.py            # NEW: Centralized logging system
-│   ├── smart_wait.py               # NEW: Intelligent waiting functions
-│   └── results_manager.py          # NEW: Organized storage system
-├── test_cases/
+│   ├── process_manager.py          # Cross-platform process management
+│   ├── logger_config.py            # Centralized logging system
+│   ├── smart_wait.py               # Intelligent waiting functions
+│   └── results_manager.py          # Organized storage system
+├── test_cases/                     # Core test modules
 │   ├── __init__.py
 │   ├── browser_test.py             # Web browsing simulation (enhanced)
 │   ├── office_test.py              # Microsoft Office automation (enhanced)
 │   └── youtube_test.py             # Video playbook testing (enhanced)
-├── test_files/
+├── test_files/                     # Test assets
 │   └── office/                     # Sample Office files for testing
-├── battery_test_results/           # NEW: Organized test results (gitignored)
+├── tests/                          # 🆕 Verification & test scripts
+│   ├── README.md                   # Test documentation
+│   ├── test_organized_storage.py   # Storage system verification
+│   ├── test_process_management.py  # Process management tests
+│   ├── test_logging_integration.py # Logging system tests
+│   ├── test_smart_waiting.py       # Smart waiting tests
+│   └── [other verification tests]  # Various development tests
+├── demos/                          # 🆕 Demonstration scripts  
+│   ├── README.md                   # Demo documentation
+│   ├── demo_organized_storage.py   # Complete storage system demo
+│   ├── demo_process_management.py  # Process management demo
+│   └── demo_centralized_logging.py # Logging system demo
+├── logs/                           # 🆕 Legacy logs (transitional)
+│   ├── README.md                   # Log management documentation
+│   └── [legacy log files]          # Old logs from pre-organized era
+├── battery_test_results/           # Organized test results (gitignored)
 │   └── YYYY-MM-DD_HH-MM-SS_HOSTNAME_testname/
 │       ├── system_info.json       # Complete hardware specifications
 │       ├── battery_timeline.csv   # Timestamped battery readings
 │       ├── summary.json           # Test results and metrics
 │       └── test_log.log           # Detailed execution logs
-├── test_organized_storage.py       # NEW: Storage system verification
-├── demo_organized_storage.py       # NEW: Demo script
-└── [various test scripts]          # NEW: Verification test suites
+└── test_env/                       # Python virtual environment
 ```
 
 ## Core Functionality

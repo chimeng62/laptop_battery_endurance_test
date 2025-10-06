@@ -166,4 +166,7 @@ battery_test_env
 # Battery test results directory
 battery_test_results/
 
+# Legacy logs directory (transitional)
+logs/
+
 ~$rd_test_2.docx

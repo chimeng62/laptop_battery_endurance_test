@@ -103,37 +103,3 @@ By default, the script will run with YouTube playback test included, if you want
 ```sh
 python -m test 1
 ```
-
-# How to calculate time difference
-
-After the laptop is shutdown due to low battery, charge your laptop and power it on. Go to this project folder, you will find a file called `logfilename.log`. It records the entire testing duration. When you open the file, you will see the timestamps that have been logged by the script.
-
-To calculate the time difference between the start and end time:
-
-**Windows**:
-
-```sh
-python datetime_calculator.py "your start timestamp" "your end timestamp"
-```
-
-**macOS**:
-
-```sh
-python3 datetime_calculator.py "your start timestamp" "your end timestamp"
-```
-
-In the future, I will make it easier to see the time difference.
-
-# Next steps:
-- Build a system to store the log file and allow users to search for laptop's battery test result
-
-# How to develop:
-
-Pull the repo, then follow the instruction above. You should start checking the `test.py` file, it is the entry file for the whole script.
-I'm thinking changing it to a __main__ script
-
-# Trouble shooting, Q&A:
-
-**Q: Cannot run Python in command prompt?**
-A: If you open the command prompt before you install Python, the `python` command has not been registered to PATH. Simply close command prompt or open a new tab will solve the issue.
-
