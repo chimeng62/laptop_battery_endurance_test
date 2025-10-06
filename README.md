@@ -56,18 +56,29 @@ battery_test_results/
 - **Battery**: Design capacity, current status, plugged state
 - **Performance**: Test duration, cycles completed, battery drain rate
 
-# Before you run any test, check all boxes in this checklist
+# ✅ **Pre-Test Setup Checklist**
 
-Use this checklist and you can make sure all tests are consistent
-- [ ] Set laptop Power mode to "Balance" (on Mac, do not turn on High Performance Mode)
-- [ ] Set laptop's screen brightness to 75% (on Mac, you can ask Siri "Set screen brightness to 75% for an accurate setting). Leave all refresh rate at default config.
-- [ ] Turn off auto turn off screen on battery power
-- [ ] Connect your laptop to Wifi network, turn on Bluetooth
-- [ ] Leave battery saver mode on if your laptop have it, set battery saver on at 30% (30% is the default settings for Windows in recent updates)
-- [ ] Turn "lower screen brightness on low battery" off
-- [ ] Turn of any battery settings such as auto dim / lock screen when user is away... (on some new Windows laptops)
-- [ ] Turn the volume to 0%
-- [ ] Charge your laptop to 100% battery
+**Complete this checklist before running any test to ensure consistent and accurate results:**
+
+### Power & Performance Settings
+- [ ] Set laptop power mode to **"Balance"** (Windows) or disable **"High Performance Mode"** (macOS)
+- [ ] Set screen brightness to **75%** (on macOS: ask Siri "Set screen brightness to 75%")
+- [ ] Leave all refresh rate settings at **default configuration**
+- [ ] Turn **off** automatic screen turn-off on battery power
+- [ ] Set battery saver mode to activate at **30%** (if available)
+
+### Display & Audio Settings  
+- [ ] Turn **off** "lower screen brightness on low battery"
+- [ ] Disable auto-dim and lock screen when user is away
+- [ ] Set volume to **0%** (muted)
+
+### Network & Connectivity
+- [ ] Connect laptop to **Wi-Fi network**  
+- [ ] Turn **on** Bluetooth
+
+### Battery Preparation
+- [ ] Charge laptop battery to **100%**
+- [ ] Disconnect charger before starting test (run on battery only)
 
 # How to run
 
@@ -135,34 +146,6 @@ python test.py 1
 python3 test.py 1
 ```
 
-## 🧪 **Testing & Demos**
-
-### Verification Tests
-Run verification tests to ensure system functionality:
-```sh
-# Test organized storage system
-python tests/test_organized_storage.py
-
-# Test process management
-python tests/test_process_management.py
-
-# Test logging integration
-python tests/test_logging_integration.py
-```
-
-### Demo Scripts
-Explore system capabilities with demonstration scripts:
-```sh
-# Demo organized storage (creates sample test folder)
-python demos/demo_organized_storage.py
-
-# Demo process management (shows force-kill capabilities)
-python demos/demo_process_management.py
-
-# Demo centralized logging
-python demos/demo_centralized_logging.py
-```
-
 ## 📁 **Project Structure**
 
 ```
@@ -178,8 +161,6 @@ laptop_battery_endurance_test/
 │   ├── browser_test.py    # Web browsing simulation
 │   ├── office_test.py     # Office applications
 │   └── youtube_test.py    # Video playback
-├── tests/                 # Verification tests
-├── demos/                 # Demonstration scripts
 ├── test_files/           # Test assets
 └── battery_test_results/ # Generated results (auto-created)
 ```
@@ -212,7 +193,7 @@ After test completion, analyze results from the generated files:
 
 ## 🐛 **Troubleshooting**
 
-### Common Issues
+### Common Issues  
 - **Applications hang on save dialogs** → ✅ Resolved with force-kill system
 - **Inconsistent timing** → ✅ Resolved with smart waiting
 - **Lost test results** → ✅ Resolved with organized storage
@@ -220,5 +201,5 @@ After test completion, analyze results from the generated files:
 
 ### Getting Help
 - Check `test_log.log` in your results folder for detailed error information
-- Run verification tests to ensure system integrity
 - Review `claude.md` for technical implementation details
+- Ensure all pre-test checklist items are completed for consistent results
