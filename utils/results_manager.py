@@ -31,6 +31,8 @@ class SystemInfo:
     battery_present: bool
     battery_design_capacity: Optional[str] = None
     gpu_info: Optional[str] = None
+    serial_number: Optional[str] = None
+    system_model: Optional[str] = None
 
 
 @dataclass
@@ -173,8 +175,8 @@ class ResultsManager:
         # Create summary
         summary = TestSummary(
             test_id=self.test_id,
-            start_time=self.start_time.isoformat(),
-            end_time=end_time.isoformat(),
+            start_time=self.start_time.strftime("%Y-%m-%dT%H:%M"),
+            end_time=end_time.strftime("%Y-%m-%dT%H:%M"),
             duration_hours=round(duration.total_seconds() / 3600, 2),
             total_cycles=self.cycle_count,
             final_battery_percent=final_battery_percent,
@@ -255,6 +257,33 @@ class ResultsManager:
         except:
             pass
         
+        # System serial number and model
+        serial_number = None
+        system_model = None
+        try:
+            if platform.system() == "Windows":
+                # Get serial number
+                result = subprocess.run(
+                    ['wmic', 'bios', 'get', 'serialnumber', '/format:value'],
+                    capture_output=True, text=True, shell=True
+                )
+                for line in result.stdout.split('\n'):
+                    if 'SerialNumber=' in line and line.split('=')[1].strip():
+                        serial_number = line.split('=')[1].strip()
+                        break
+                
+                # Get system model
+                result = subprocess.run(
+                    ['wmic', 'computersystem', 'get', 'model', '/format:value'],
+                    capture_output=True, text=True, shell=True
+                )
+                for line in result.stdout.split('\n'):
+                    if 'Model=' in line and line.split('=')[1].strip():
+                        system_model = line.split('=')[1].strip()
+                        break
+        except:
+            pass
+        
         return SystemInfo(
             cpu=cpu_info,
             cpu_cores=psutil.cpu_count(logical=False),
@@ -266,7 +295,9 @@ class ResultsManager:
             python_version=platform.python_version(),
             battery_present=battery_present,
             battery_design_capacity=battery_design_capacity,
-            gpu_info=gpu_info
+            gpu_info=gpu_info,
+            serial_number=serial_number,
+            system_model=system_model
         )
     
     def _save_system_info(self) -> None:
