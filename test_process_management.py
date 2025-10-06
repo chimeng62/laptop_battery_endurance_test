@@ -66,8 +66,8 @@ def test_browser_simulation():
     
     pm = ProcessManager()
     
-    # Find existing browser processes before we start
-    initial_browsers = pm.find_and_track_processes(['msedge', 'chrome', 'firefox', 'safari'])
+    # Find existing browser processes before we start (including Brave)
+    initial_browsers = pm.find_and_track_processes(['msedge', 'chrome', 'firefox', 'safari', 'brave'])
     logger.info(f"Found {len(initial_browsers)} existing browser processes")
     
     # Open a webpage using default browser
@@ -79,8 +79,8 @@ def test_browser_simulation():
     # Wait for browser to start
     time.sleep(3)
     
-    # Find new browser processes
-    new_browsers = pm.find_and_track_processes(['msedge', 'chrome', 'firefox', 'safari'])
+    # Find new browser processes (including Brave)
+    new_browsers = pm.find_and_track_processes(['msedge', 'chrome', 'firefox', 'safari', 'brave'])
     logger.info(f"Now tracking {len(new_browsers)} browser processes")
     
     # Show process info
@@ -104,13 +104,29 @@ def test_office_simulation():
     
     import platform
     if platform.system() == "Windows":
-        # Try to open Word
+        # Try to open Word using proper Windows method
         try:
             logger.info("Attempting to launch Word...")
-            pid = pm.launch_and_track(['winword.exe'], 'Test Word')
+            
+            # Try multiple ways to launch Word
+            word_commands = [
+                ['winword.exe'],
+                [r'C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE'],
+                [r'C:\Program Files (x86)\Microsoft Office\root\Office16\WINWORD.EXE'],
+                ['cmd', '/c', 'start', 'winword']
+            ]
+            
+            pid = None
+            for cmd in word_commands:
+                try:
+                    pid = pm.launch_and_track(cmd, 'Test Word')
+                    if pid:
+                        logger.info(f"✅ Successfully launched Word using {cmd[0]} (PID: {pid})")
+                        break
+                except:
+                    continue
+            
             if pid:
-                logger.info(f"✅ Successfully launched Word (PID: {pid})")
-                
                 # Wait then terminate
                 time.sleep(3)
                 if pm.terminate_process(pid, force_kill=True):
@@ -118,7 +134,7 @@ def test_office_simulation():
                 else:
                     logger.error("❌ Failed to terminate Word")
             else:
-                logger.info("⚠️  Word not available or failed to launch")
+                logger.info("⚠️  Word not available or failed to launch with any method")
         except Exception as e:
             logger.info(f"⚠️  Word test failed: {e}")
     

@@ -241,8 +241,8 @@ class ProcessManager:
         """
         # Common browser and office processes that battery tests might open
         common_processes = [
-            # Browsers
-            'msedge.exe', 'chrome.exe', 'firefox.exe', 'safari',
+            # Browsers (including Brave)
+            'msedge.exe', 'chrome.exe', 'firefox.exe', 'safari', 'brave.exe',
             # Office
             'winword.exe', 'excel.exe', 'powerpnt.exe',
             # Media

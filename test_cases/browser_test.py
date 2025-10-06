@@ -6,6 +6,7 @@ import platform
 from utils.battery_utils import get_battery_level
 from utils import custom_scroll
 from utils.process_manager import process_manager
+from utils.smart_wait import wait_for_page_load, smart_sleep
 
 def run_browser_test():
 
@@ -39,28 +40,35 @@ def run_browser_test():
         'https://www.engadget.com/apps/flipboard-just-launched-surf-which-is-sort-of-like-an-rss-feed-for-the-open-social-web-184015833.html',
     ]
 
-    # Track browser processes before opening URLs
-    initial_browsers = process_manager.find_and_track_processes(['msedge', 'chrome', 'firefox', 'safari'])
+    # Track browser processes before opening URLs (including Brave)
+    initial_browsers = process_manager.find_and_track_processes(['msedge', 'chrome', 'firefox', 'safari', 'brave'])
     print(f'Initially tracking {len(initial_browsers)} browser processes')
 
     for url in urls:
+        print(f"Opening: {url}")
         webbrowser.open(url)
 
-        time.sleep(2)
+        # Smart wait for page to load (max 10 seconds)
+        if wait_for_page_load(timeout=10):
+            print("  Page loaded")
+        else:
+            print("  Page load timeout - continuing anyway")
 
-        # Track any new browser processes that might have started
-        process_manager.find_and_track_processes(['msedge', 'chrome', 'firefox', 'safari'])
+        # Track any new browser processes that might have started (including Brave)
+        process_manager.find_and_track_processes(['msedge', 'chrome', 'firefox', 'safari', 'brave'])
 
         pyautogui.moveTo(screenWidth/2, screenHeight/2, duration=1)
         pyautogui.click(clicks=1)
 
         custom_scroll(times=10, direction="down")
 
-        time.sleep(10)
+        # Smart sleep - can be interrupted if needed
+        smart_sleep(10)
 
         custom_scroll(times=10, direction="up")
 
-        time.sleep(10)
+        # Smart sleep - can be interrupted if needed  
+        smart_sleep(10)
 
         custom_scroll(times=10, direction="down")
 
@@ -69,9 +77,9 @@ def run_browser_test():
     terminated_count = process_manager.cleanup_all_tracked(force_kill=True)
     print(f'Force terminated {terminated_count} browser processes')
     
-    # Safety net: cleanup any remaining browser processes
+    # Safety net: cleanup any remaining browser processes (including Brave)
     safety_cleanup = process_manager.terminate_by_name(
-        ['msedge.exe', 'chrome.exe', 'firefox.exe'], 
+        ['msedge.exe', 'chrome.exe', 'firefox.exe', 'brave.exe'], 
         force_kill=True
     )
     if safety_cleanup > 0:

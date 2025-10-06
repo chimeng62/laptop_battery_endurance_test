@@ -5,6 +5,7 @@ from utils.battery_utils import get_battery_level
 from utils import start_file, close_window
 from utils import custom_scroll
 from utils.process_manager import process_manager
+from utils.smart_wait import wait_for_application_ready, smart_sleep
 import time
 
 text_to_write = """
@@ -44,8 +45,12 @@ def run_office_test():
         
         start_file(path)
         
-        # Wait for application to start and track any new Office processes
-        time.sleep(3)
+        # Smart wait for application to be ready (max 15 seconds)
+        if wait_for_application_ready(timeout=15):
+            print("  Application ready")
+        else:
+            print("  Application timeout - continuing anyway")
+            
         process_manager.find_and_track_processes(office_processes)
         
         pyautogui.moveTo(screenWidth/2, screenHeight/2, duration=1)
@@ -53,11 +58,13 @@ def run_office_test():
 
         custom_scroll(times=10, direction="down")
 
-        time.sleep(10)
+        # Smart sleep instead of hardcoded delay
+        smart_sleep(10)
 
         custom_scroll(times=10, direction="up")
 
-        time.sleep(10)
+        # Smart sleep instead of hardcoded delay
+        smart_sleep(10)
 
         custom_scroll(times=10, direction="down")
 
@@ -66,7 +73,8 @@ def run_office_test():
         terminated = process_manager.cleanup_all_tracked(force_kill=True)
         print(f'Force terminated {terminated} Office processes')
 
-        time.sleep(2)
+        # Brief pause before next file
+        smart_sleep(2)
     
     # Final cleanup of any remaining Office processes
     print("Final Office cleanup...")
