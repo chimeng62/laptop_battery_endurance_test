@@ -7,12 +7,16 @@ from utils.battery_utils import get_battery_level
 from utils import custom_scroll
 from utils.process_manager import process_manager
 from utils.smart_wait import wait_for_page_load, smart_sleep
+from utils.logger_config import get_logger
+
+logger = get_logger(__name__)
 
 def run_browser_test():
 
     os_name = os.name
     platform_name = platform.system()
 
+    logger.info(f'Starting Browser Test on {os_name}, {platform_name}')
     print(f'Running Browser Test on {os_name}, {platform_name}')
     get_battery_level()
 
@@ -45,6 +49,7 @@ def run_browser_test():
     print(f'Initially tracking {len(initial_browsers)} browser processes')
 
     for url in urls:
+        logger.info(f"Opening browser URL: {url}")
         print(f"Opening: {url}")
         webbrowser.open(url)
 
@@ -73,8 +78,10 @@ def run_browser_test():
         custom_scroll(times=10, direction="down")
 
     # Force close all tracked browser processes to avoid confirmation dialogs
+    logger.info("Initiating browser process cleanup")
     print("Closing browser processes...")
     terminated_count = process_manager.cleanup_all_tracked(force_kill=True)
+    logger.info(f'Force terminated {terminated_count} browser processes')
     print(f'Force terminated {terminated_count} browser processes')
     
     # Safety net: cleanup any remaining browser processes (including Brave)

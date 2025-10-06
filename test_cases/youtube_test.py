@@ -7,12 +7,16 @@ from utils.battery_utils import get_battery_level
 from utils import close_window
 from utils.smart_wait import YOUTUBE_DURATION, wait_for_page_load
 from utils.process_manager import process_manager
+from utils.logger_config import get_logger
+
+logger = get_logger(__name__)
 
 def run_youtube_test():
 
     os_name = os.name
     platform_name = platform.system()
 
+    logger.info(f'Starting YouTube Test on {os_name}, {platform_name}')
     print(f'Running YouTube Test on {os_name}, {platform_name}')
     get_battery_level()
 
@@ -30,6 +34,7 @@ def run_youtube_test():
 
     for url in urls:
         get_battery_level()
+        logger.info(f"Opening YouTube video: {url}")
         print(f"Opening YouTube video: {url}")
         webbrowser.open(url)
 

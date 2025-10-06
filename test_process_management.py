@@ -12,10 +12,9 @@ import os
 from utils.process_manager import ProcessManager
 
 # Set up logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s | %(levelname)s | %(message)s'
-)
+# Use centralized logging
+from utils.logger_config import get_logger
+logger = get_logger(__name__)
 
 logger = logging.getLogger(__name__)
 

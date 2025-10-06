@@ -16,22 +16,19 @@ from test_cases.youtube_test import run_youtube_test
 # Disable fail safe mechanism of Pyautogui
 pyautogui.FAILSAFE = False
 
-logging.basicConfig(
-    filename=f'logfilename.log',
-    encoding='utf-8',
-    level=logging.INFO,
-    format='%(asctime)s | %(message)s'
-)
+# Configure centralized logging
+from utils.logger_config import get_logger
+logger = get_logger(__name__)
 
 def start_test(no_youtube='0'):
-    logging.info('====================== Starting new test... ====================')
+    logger.info('====================== Starting new test... ====================')
     if (no_youtube == '1'):
         youtube_message = 'YouTube test is disabled'
     else:
         youtube_message = 'YouTube test is enable'
 
     print(youtube_message)
-    logging.info(youtube_message)
+    logger.info(youtube_message)
 
     os_name = os.name
     platform_name = platform.system()
@@ -46,41 +43,41 @@ def start_test(no_youtube='0'):
             # Cleanup any processes from previous cycles
             cleanup_count = process_manager.cleanup_common_test_processes(force_kill=True)
             if cleanup_count > 0:
-                logging.info(f'Pre-cycle cleanup: terminated {cleanup_count} processes')
+                logger.info(f'Pre-cycle cleanup: terminated {cleanup_count} processes')
             
             # Run tests with error handling
             try:
                 run_browser_test()
             except Exception as e:
-                logging.error(f'Browser test failed: {e}')
+                logger.error(f'Browser test failed: {e}')
                 process_manager.cleanup_common_test_processes(force_kill=True)
             
             try:
                 run_office_test()
             except Exception as e:
-                logging.error(f'Office test failed: {e}')
+                logger.error(f'Office test failed: {e}')
                 process_manager.cleanup_common_test_processes(force_kill=True)
 
             if str(no_youtube) != '1':
                 try:
                     run_youtube_test()
                 except Exception as e:
-                    logging.error(f'YouTube test failed: {e}')
+                    logger.error(f'YouTube test failed: {e}')
                     process_manager.cleanup_common_test_processes(force_kill=True)
             
             print("Test cycle completed. Starting next cycle...")
             
     except KeyboardInterrupt:
         print("Test interrupted by user")
-        logging.info('Test interrupted by user')
+        logger.info('Test interrupted by user')
     except Exception as e:
         print(f"Test failed with error: {e}")
-        logging.error(f'Test failed: {e}')
+        logger.error(f'Test failed: {e}')
     finally:
         # Final cleanup
         print("Performing final cleanup...")
         final_cleanup = process_manager.cleanup_common_test_processes(force_kill=True)
-        logging.info(f'Final cleanup: terminated {final_cleanup} processes')
+        logger.info(f'Final cleanup: terminated {final_cleanup} processes')
 
 def calculate_elapsed_time(start_time):
     elapsed_time = datetime.now() - start_time

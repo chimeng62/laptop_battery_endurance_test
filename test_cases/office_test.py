@@ -6,7 +6,10 @@ from utils import start_file, close_window
 from utils import custom_scroll
 from utils.process_manager import process_manager
 from utils.smart_wait import wait_for_application_ready, smart_sleep
+from utils.logger_config import get_logger
 import time
+
+logger = get_logger(__name__)
 
 text_to_write = """
     Activity Requirements
@@ -29,6 +32,7 @@ def run_office_test():
     os_name = os.name
     platform_name = platform.system()
 
+    logger.info(f'Starting Office Test on {os_name}, {platform_name}')
     print(f'Running Office Test on {os_name}, {platform_name}')
     get_battery_level()
 
@@ -41,6 +45,7 @@ def run_office_test():
     print(f'Initially tracking {len(initial_office)} Office processes')
 
     for path in file_paths:
+        logger.info(f'Opening Office file: {path}')
         print(f'Opening file: {path}')
         
         start_file(path)
