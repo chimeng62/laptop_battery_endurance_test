@@ -55,25 +55,6 @@ Use this checklist and you can make sure all tests are consistent
 
 **Always navigate to project folder first**
 
-### macOS:
-
-Open Terminal and run the following commands
-
-```sh
-python3 -m venv battery_test_env
-source battery_test_env/bin/activate
-pip3 install --upgrade pip
-pip3 install -r requirements.txt
-python3 -m test
-```
-
-**You only need to do it once, on the first time**. For the following runs, you only need to run these code
-
-```sh
-source battery_test_env/bin/activate
-python3 -m test
-```
-
 ### Windows:
 
 Note: You must run the following commands in Command Prompt (CMD), do not run on PowerShell
@@ -93,6 +74,25 @@ battery_test_env\Scripts\activate.bat
 python -m test
 ```
 
+### macOS:
+
+Open Terminal and run the following commands
+
+```sh
+python3 -m venv battery_test_env
+source battery_test_env/bin/activate
+pip3 install --upgrade pip
+pip3 install -r requirements.txt
+python3 -m test
+```
+
+**You only need to do it once, on the first time**. For the following runs, you only need to run these code
+
+```sh
+source battery_test_env/bin/activate
+python3 -m test
+```
+
 > [!NOTE]
 **Note for Windows ARM**: You may need to install C++ Builds Tools (especially on Windows ARM devices) if the error show when building wheels. Check the error message to see if you need to do so. Download [Visual Studio](https://visualstudio.microsoft.com/downloads/) and install **Desktop Development with C++**, then run the installation commands again.
 
@@ -110,16 +110,16 @@ After the laptop is shutdown due to low battery, charge your laptop and power it
 
 To calculate the time difference between the start and end time:
 
-**macOS**:
-
-```sh
-python3 datetime_calculator.py "your start timestamp" "your end timestamp"
-```
-
 **Windows**:
 
 ```sh
 python datetime_calculator.py "your start timestamp" "your end timestamp"
+```
+
+**macOS**:
+
+```sh
+python3 datetime_calculator.py "your start timestamp" "your end timestamp"
 ```
 
 In the future, I will make it easier to see the time difference.

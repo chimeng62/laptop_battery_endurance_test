@@ -8,6 +8,7 @@ import argparse
 from datetime import datetime
 
 from utils.battery_utils import get_battery_level
+from utils.process_manager import process_manager
 from test_cases.office_test import run_office_test
 from test_cases.browser_test import run_browser_test
 from test_cases.youtube_test import run_youtube_test
@@ -38,12 +39,48 @@ def start_test(no_youtube='0'):
     print(f'Running on {os_name}, {platform_name}')
     get_battery_level()
 
-    while True:
-        run_browser_test()
-        run_office_test()
+    try:
+        while True:
+            print("Starting new test cycle...")
+            
+            # Cleanup any processes from previous cycles
+            cleanup_count = process_manager.cleanup_common_test_processes(force_kill=True)
+            if cleanup_count > 0:
+                logging.info(f'Pre-cycle cleanup: terminated {cleanup_count} processes')
+            
+            # Run tests with error handling
+            try:
+                run_browser_test()
+            except Exception as e:
+                logging.error(f'Browser test failed: {e}')
+                process_manager.cleanup_common_test_processes(force_kill=True)
+            
+            try:
+                run_office_test()
+            except Exception as e:
+                logging.error(f'Office test failed: {e}')
+                process_manager.cleanup_common_test_processes(force_kill=True)
 
-        if str(no_youtube) != '1':
-            run_youtube_test()
+            if str(no_youtube) != '1':
+                try:
+                    run_youtube_test()
+                except Exception as e:
+                    logging.error(f'YouTube test failed: {e}')
+                    process_manager.cleanup_common_test_processes(force_kill=True)
+            
+            print("Test cycle completed. Starting next cycle...")
+            
+    except KeyboardInterrupt:
+        print("Test interrupted by user")
+        logging.info('Test interrupted by user')
+    except Exception as e:
+        print(f"Test failed with error: {e}")
+        logging.error(f'Test failed: {e}')
+    finally:
+        # Final cleanup
+        print("Performing final cleanup...")
+        final_cleanup = process_manager.cleanup_common_test_processes(force_kill=True)
+        logging.info(f'Final cleanup: terminated {final_cleanup} processes')
 
 def calculate_elapsed_time(start_time):
     elapsed_time = datetime.now() - start_time

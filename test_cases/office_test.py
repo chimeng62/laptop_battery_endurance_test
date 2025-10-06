@@ -4,6 +4,7 @@ import platform
 from utils.battery_utils import get_battery_level
 from utils import start_file, close_window
 from utils import custom_scroll
+from utils.process_manager import process_manager
 import time
 
 text_to_write = """
@@ -33,9 +34,20 @@ def run_office_test():
     screenWidth, screenHeight = pyautogui.size() # Get the size of the primary monitor
     print(f'Screen size: {screenWidth}, {screenHeight}')
 
-    for path in file_paths:
+    # Track Office processes before starting
+    office_processes = ['winword', 'excel', 'powerpnt', 'Word', 'Excel', 'PowerPoint']
+    initial_office = process_manager.find_and_track_processes(office_processes)
+    print(f'Initially tracking {len(initial_office)} Office processes')
 
+    for path in file_paths:
+        print(f'Opening file: {path}')
+        
         start_file(path)
+        
+        # Wait for application to start and track any new Office processes
+        time.sleep(3)
+        process_manager.find_and_track_processes(office_processes)
+        
         pyautogui.moveTo(screenWidth/2, screenHeight/2, duration=1)
         pyautogui.click(clicks=1)
 
@@ -49,6 +61,18 @@ def run_office_test():
 
         custom_scroll(times=10, direction="down")
 
-        close_window()
+        # Force close to avoid "Do you want to save?" dialogs
+        print("Force closing Office application...")
+        terminated = process_manager.cleanup_all_tracked(force_kill=True)
+        print(f'Force terminated {terminated} Office processes')
 
         time.sleep(2)
+    
+    # Final cleanup of any remaining Office processes
+    print("Final Office cleanup...")
+    final_cleanup = process_manager.terminate_by_name(
+        ['winword.exe', 'excel.exe', 'powerpnt.exe'], 
+        force_kill=True
+    )
+    if final_cleanup > 0:
+        print(f'Final cleanup terminated {final_cleanup} additional Office processes')

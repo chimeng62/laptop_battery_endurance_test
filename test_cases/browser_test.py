@@ -5,6 +5,7 @@ import os
 import platform
 from utils.battery_utils import get_battery_level
 from utils import custom_scroll
+from utils.process_manager import process_manager
 
 def run_browser_test():
 
@@ -38,10 +39,17 @@ def run_browser_test():
         'https://www.engadget.com/apps/flipboard-just-launched-surf-which-is-sort-of-like-an-rss-feed-for-the-open-social-web-184015833.html',
     ]
 
+    # Track browser processes before opening URLs
+    initial_browsers = process_manager.find_and_track_processes(['msedge', 'chrome', 'firefox', 'safari'])
+    print(f'Initially tracking {len(initial_browsers)} browser processes')
+
     for url in urls:
         webbrowser.open(url)
 
         time.sleep(2)
+
+        # Track any new browser processes that might have started
+        process_manager.find_and_track_processes(['msedge', 'chrome', 'firefox', 'safari'])
 
         pyautogui.moveTo(screenWidth/2, screenHeight/2, duration=1)
         pyautogui.click(clicks=1)
@@ -56,9 +64,15 @@ def run_browser_test():
 
         custom_scroll(times=10, direction="down")
 
-    # Close the browser:
-    if is_windows:
-        pyautogui.hotkey('alt', 'f4')
-
-    if is_macos:
-        pyautogui.hotkey('command', 'q')
+    # Force close all tracked browser processes to avoid confirmation dialogs
+    print("Closing browser processes...")
+    terminated_count = process_manager.cleanup_all_tracked(force_kill=True)
+    print(f'Force terminated {terminated_count} browser processes')
+    
+    # Safety net: cleanup any remaining browser processes
+    safety_cleanup = process_manager.terminate_by_name(
+        ['msedge.exe', 'chrome.exe', 'firefox.exe'], 
+        force_kill=True
+    )
+    if safety_cleanup > 0:
+        print(f'Safety cleanup terminated {safety_cleanup} additional browser processes')
