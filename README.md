@@ -1,8 +1,18 @@
-# Laptop Battery Test
+# Laptop Battery Endurance Test
 
-This test aims to simulate a series of office-related tasks, such as web browsing, opening and scrolling MS Office files... in order to test how long a laptop's battery may last.
+🔋 **Enterprise-Grade Battery Testing Suite** - Simulate realistic office workloads to measure laptop battery performance with comprehensive result tracking and analysis.
 
-The result is constantly written to a log file so you do not have to worry about losing your test. The test file will only be saved on the disk, with the accuracy of +- 1-2 minutes, not a lot (and it can be improved in the future).
+This test runs continuous cycles of web browsing, Microsoft Office tasks, and YouTube video playback to provide standardized, reproducible battery performance measurements.
+
+## ✨ **Key Features (Phase 1 Complete)**
+
+- 📊 **Organized Results Storage** - Automatic folder creation with timestamped results
+- 🖥️ **Complete System Identification** - CPU, RAM, OS, serial number, and model detection
+- ⚡ **Robust Process Management** - Force-kill system prevents hanging applications
+- 📈 **Battery Timeline Tracking** - CSV format with minute-precision timestamps
+- 🔧 **Smart Error Handling** - Comprehensive recovery from application failures
+- 📋 **Automatic Test Summaries** - JSON reports with duration and performance metrics
+- 🌐 **Cross-Platform Support** - Enhanced Windows 11 and macOS 12+ compatibility
 
 # Supported OS
 
@@ -18,16 +28,33 @@ The author has tested this program on several laptops running a wide variety of 
 - A default browser: Edge, Safari, or any default browser of your choice. Edge and Safari are recommended since they are default browser for most Windows and Mac machine
 - Microsoft Office: Word, Excel, PowerPoint
 
-# Tasks to perform
+# 🎯 Test Workflow
 
-The program will run infinite loop of the following tasks
-1. Open 5 websites using default browser
-2. Open 3 Word files and 1 Excel files
-3. Play youtube videos
+The program runs continuous cycles of realistic office tasks:
+1. **Web Browsing** - Opens 5 websites with scrolling and interaction
+2. **Office Tasks** - Opens 3 Word files and 1 Excel file with navigation
+3. **Video Playback** - YouTube videos for media consumption testing
 
-There will be scrolling and mouse moving when running the test.
+Each cycle includes mouse movement, scrolling, and realistic user interaction patterns.
 
-In the future, text input will be added to better resemble how a normal user would use an Office app.
+## 📊 **Results & Output** 
+
+### Organized Storage Structure
+Each test automatically creates a comprehensive results folder:
+```
+battery_test_results/
+└── YYYY-MM-DD_HH-MM-SS_HOSTNAME_testname/
+    ├── system_info.json      # Complete hardware specifications
+    ├── battery_timeline.csv  # Timestamped battery readings
+    ├── summary.json          # Test duration and performance metrics
+    └── test_log.log         # Detailed execution logs
+```
+
+### System Information Collected
+- **Hardware**: CPU model, cores, RAM, serial number, system model
+- **Software**: OS version, Python version, architecture
+- **Battery**: Design capacity, current status, plugged state
+- **Performance**: Test duration, cycles completed, battery drain rate
 
 # Before you run any test, check all boxes in this checklist
 
@@ -64,14 +91,14 @@ python -m venv battery_test_env
 battery_test_env\Scripts\activate.bat
 python.exe -m pip install --upgrade pip
 pip install -r requirements.txt
-python -m test
+python test.py
 ```
 
 **You only need to do it once, on the first time**. For the following runs, you only need to run these code
 
 ```cmd
 battery_test_env\Scripts\activate.bat
-python -m test
+python test.py
 ```
 
 ### macOS:
@@ -83,23 +110,115 @@ python3 -m venv battery_test_env
 source battery_test_env/bin/activate
 pip3 install --upgrade pip
 pip3 install -r requirements.txt
-python3 -m test
+python3 test.py
 ```
 
 **You only need to do it once, on the first time**. For the following runs, you only need to run these code
 
 ```sh
 source battery_test_env/bin/activate
-python3 -m test
+python3 test.py
 ```
 
 > [!NOTE]
 **Note for Windows ARM**: You may need to install C++ Builds Tools (especially on Windows ARM devices) if the error show when building wheels. Check the error message to see if you need to do so. Download [Visual Studio](https://visualstudio.microsoft.com/downloads/) and install **Desktop Development with C++**, then run the installation commands again.
 
-# Disable YouTube test
+## 🎬 **Disable YouTube Test**
 
-By default, the script will run with YouTube playback test included, if you want to disable the YouTube playback, run
+By default, the script includes YouTube playback testing. To disable YouTube playback:
 
 ```sh
-python -m test 1
+# Windows
+python test.py 1
+
+# macOS  
+python3 test.py 1
 ```
+
+## 🧪 **Testing & Demos**
+
+### Verification Tests
+Run verification tests to ensure system functionality:
+```sh
+# Test organized storage system
+python tests/test_organized_storage.py
+
+# Test process management
+python tests/test_process_management.py
+
+# Test logging integration
+python tests/test_logging_integration.py
+```
+
+### Demo Scripts
+Explore system capabilities with demonstration scripts:
+```sh
+# Demo organized storage (creates sample test folder)
+python demos/demo_organized_storage.py
+
+# Demo process management (shows force-kill capabilities)
+python demos/demo_process_management.py
+
+# Demo centralized logging
+python demos/demo_centralized_logging.py
+```
+
+## 📁 **Project Structure**
+
+```
+laptop_battery_endurance_test/
+├── test.py                 # Main battery test runner
+├── utils/                  # Core system modules
+│   ├── battery_utils.py    # Battery monitoring
+│   ├── process_manager.py  # Process management
+│   ├── logger_config.py    # Centralized logging
+│   ├── smart_wait.py       # Intelligent delays
+│   └── results_manager.py  # Organized storage
+├── test_cases/            # Test modules
+│   ├── browser_test.py    # Web browsing simulation
+│   ├── office_test.py     # Office applications
+│   └── youtube_test.py    # Video playback
+├── tests/                 # Verification tests
+├── demos/                 # Demonstration scripts
+├── test_files/           # Test assets
+└── battery_test_results/ # Generated results (auto-created)
+```
+
+## 🔧 **Advanced Features**
+
+### Robust Process Management
+- **Force-kill system** prevents hanging on confirmation dialogs
+- **Cross-platform support** (Windows taskkill, macOS pkill)
+- **Process tracking** for reliable cleanup between test cycles
+
+### Smart Error Handling
+- **Comprehensive try-catch blocks** around all test operations
+- **Graceful failure recovery** - continues testing even if components fail
+- **Detailed error logging** for troubleshooting
+
+### Intelligent System Monitoring
+- **CPU-based smart waiting** replaces hardcoded delays
+- **Real-time battery monitoring** with timeline tracking
+- **System resource awareness** for optimal test execution
+
+## 📈 **Result Analysis**
+
+After test completion, analyze results from the generated files:
+
+1. **system_info.json** - Hardware specifications and test environment
+2. **battery_timeline.csv** - Import into Excel/Google Sheets for graphing
+3. **summary.json** - Key metrics including duration and battery drain rate
+4. **test_log.log** - Detailed execution log for troubleshooting
+
+## 🐛 **Troubleshooting**
+
+### Common Issues
+- **Applications hang on save dialogs** → ✅ Resolved with force-kill system
+- **Inconsistent timing** → ✅ Resolved with smart waiting
+- **Lost test results** → ✅ Resolved with organized storage
+- **Process cleanup failures** → ✅ Resolved with robust process management
+
+### Getting Help
+- Check `test_log.log` in your results folder for detailed error information
+- Run verification tests to ensure system integrity
+- Review `claude.md` for technical implementation details
